@@ -1,3 +1,130 @@
-<!DOCTYPE html><html lang="de"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Smarte Suche</title>
-<body style="font:17px/1.5 system-ui,sans-serif;max-width:600px;margin:40px auto;padding:0 16px">
-<h1>Smarte Suche</h1><p>Hier liegt nur der Code für das Lesezeichen. Die Anleitung zum Installieren bekommst du von Jakob.</p></body></html>
+<!DOCTYPE html>
+<html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Smarte Suche für I care</title>
+<style>
+/* VOICE: ruhig, klar, wie eine Hilfeseite einer Lernplattform
+   IDEA: eine Installationskarte, Schritt für Schritt
+   PICTURE: Mini-Vorschau der Filterleiste in Thieme-Farben
+   COLOUR and TYPE: Weiß/Hellblau, Dunkelblau #013476, Akzent #a3d8f6; Inter
+   LAYOUT: eine Spalte, Schritte als nummerierte Liste */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+:root{color-scheme:light dark;--bg:light-dark(#f1f5f9,#0d1726);--card:light-dark(#fff,#16233a);--ink:light-dark(#0f1b2d,#e8eef7);--muted:light-dark(#4a5a70,#a9b7cc);--blue:light-dark(#013476,#8cc3ee);--line:light-dark(#d6e2ee,#2a3b57);--chip:light-dark(#e3ecf3,#1f3352)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Inter,system-ui,sans-serif;overflow-x:clip}
+.wrap{max-width:760px;margin:0 auto;padding:clamp(24px,4vw,48px) 16px 64px}
+h1{font-size:clamp(28px,5vw,40px);line-height:1.1;color:var(--blue);margin:0 0 8px;text-wrap:balance;font-weight:700}
+.lead{color:var(--muted);margin:0 0 24px;max-width:60ch}
+.demo{background:var(--card);border-radius:10px;padding:18px;border:1px solid var(--line);margin-bottom:28px}
+.demo .t{color:var(--blue);font-size:19px;margin-bottom:10px}
+.row{display:flex;flex-wrap:wrap;gap:8px}
+.dd{border:1px solid var(--line);border-radius:6px;padding:6px 12px;color:var(--blue);font-size:14px;background:var(--card)}
+.dd.on{background:var(--blue);color:var(--card);border-color:var(--blue)}
+.res{margin-top:12px;border-left:4px solid var(--blue);padding:8px 12px;background:var(--chip);border-radius:4px;font-size:14px}
+.res b{color:var(--blue)}mark{background:#f8d948;color:#3a3a3a;border-radius:3px;padding:0 2px}
+h2{font-size:21px;color:var(--blue);margin:28px 0 10px}
+ol{padding-left:22px;margin:0}li{margin:0 0 12px}
+.code{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px}
+textarea{width:100%;height:110px;font:12px/1.4 ui-monospace,Menlo,monospace;border:1px solid var(--line);border-radius:6px;padding:8px;background:var(--bg);color:var(--ink);resize:vertical}
+button{font:600 16px Inter,system-ui,sans-serif;min-height:44px;padding:10px 18px;border-radius:6px;border:0;background:#a3d8f6;color:#013476;cursor:pointer;margin-top:10px}
+button:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.msg{font-size:14px;color:var(--muted);margin-left:10px}
+.note{font-size:14px;color:var(--muted);background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-top:24px}
+.where{background:var(--card);border:2px solid #a3d8f6;border-radius:10px;padding:14px 16px;margin:0 0 24px}.where b{color:var(--blue)}.tip{display:block;font-size:14px;color:var(--muted);margin-top:4px}
+.small{font-size:14px;color:var(--muted);margin:0 0 8px}
+.tag{font-size:12px;font-weight:600;background:#a3d8f6;color:#013476;border-radius:10px;padding:2px 8px;vertical-align:middle;margin-left:6px}
+.steps{list-style:none;padding:0;margin:0 0 8px}
+.steps li{display:flex;gap:12px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:0 0 8px}
+.steps .n{flex:none;width:30px;height:30px;border-radius:50%;background:#013476;color:#fff;font-weight:700;display:grid;place-items:center}
+.feat{padding-left:20px}.feat li{margin:0 0 10px}
+.sw{display:inline-block;border-radius:4px;padding:0 6px;margin:4px 4px 0 0;font-weight:600;font-size:14px}
+.sw.r{background:#ffcaca;color:#8a1010}.sw.g{background:#2e9e57;color:#fff}.sw.p{background:#ffe3f0;box-shadow:inset 0 -2px 0 #f4a6c9;color:#3a2030}
+details{margin-top:12px}summary{cursor:pointer;color:var(--muted);font-size:14px}
+.tip{font-size:15px;color:var(--muted);background:var(--card);border-left:4px solid #a3d8f6;border-radius:6px;padding:10px 12px}
+.kbd{display:inline-block;background:var(--chip);border-radius:4px;padding:0 6px;font-weight:600}
+.share{display:flex;gap:18px;align-items:center;flex-wrap:wrap;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:0 0 24px}
+.share .qr{flex:none;width:150px;height:150px;background:#fff;border-radius:8px;padding:6px}.share .qr svg{width:100%;height:100%;display:block}
+.share .tx{flex:1 1 220px}.share .tx b{color:var(--blue)}
+.shot{display:block;width:100%;max-width:560px;border-radius:10px;border:1px solid var(--line);margin:8px 0 2px}
+</style></head><body><div class="wrap">
+<h1>Smarte Suche für I care</h1>
+<p class="lead">Ein Helfer für deine Thieme-Bücher in I care. Er sortiert die Treffer, markiert wichtige Stellen in Farbe und zeigt dir passende Dateien aus Moodle.</p>
+
+<div class="where"><b>Gut zu wissen:</b> Es gibt <b>keinen Knopf in I care</b> und <b>keine App</b>. Die Smarte Suche ist ein <b>Lesezeichen in Safari</b>. Du legst es <b>einmal</b> an, das dauert 2 Minuten.</div>
+
+<div class="share"><div class="qr" role="img" aria-label="QR-Code zu dieser Seite"><svg width="198" height="198" class="segno"><g transform="scale(6)"><path fill="#fff" d="M0 0h33v33h-33z"/><path class="qrline" stroke="#013476" d="M2 2.5h7m2 0h2m1 0h1m2 0h1m1 0h3m2 0h7m-29 1h1m5 0h1m2 0h1m1 0h3m1 0h1m1 0h1m4 0h1m5 0h1m-29 1h1m1 0h3m1 0h1m2 0h3m2 0h1m2 0h2m1 0h1m1 0h1m1 0h3m1 0h1m-29 1h1m1 0h3m1 0h1m2 0h1m4 0h1m3 0h3m1 0h1m1 0h3m1 0h1m-29 1h1m1 0h3m1 0h1m2 0h2m1 0h2m1 0h1m6 0h1m1 0h3m1 0h1m-29 1h1m5 0h1m1 0h2m1 0h3m1 0h2m1 0h2m2 0h1m5 0h1m-29 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-20 1h1m1 0h1m2 0h2m1 0h2m-19 1h1m2 0h1m1 0h2m1 0h2m3 0h2m1 0h1m2 0h1m1 0h1m1 0h1m-21 1h1m1 0h1m1 0h1m1 0h2m2 0h1m2 0h2m2 0h3m2 0h1m2 0h1m-29 1h1m1 0h1m1 0h1m1 0h4m2 0h1m1 0h1m2 0h3m1 0h2m1 0h4m-24 1h1m2 0h4m1 0h2m1 0h2m4 0h1m1 0h1m2 0h2m-28 1h1m1 0h1m1 0h3m2 0h1m1 0h1m1 0h1m3 0h2m1 0h4m1 0h1m1 0h2m-29 1h2m2 0h1m3 0h1m1 0h1m1 0h2m5 0h3m-22 1h2m2 0h3m1 0h5m3 0h1m4 0h2m2 0h4m-29 1h1m1 0h1m4 0h2m1 0h1m1 0h2m3 0h1m2 0h1m2 0h1m1 0h1m1 0h1m-28 1h3m1 0h3m1 0h1m3 0h1m3 0h2m2 0h1m2 0h1m3 0h1m-27 1h2m1 0h1m2 0h8m1 0h2m2 0h4m1 0h1m2 0h1m-29 1h1m1 0h1m3 0h3m9 0h1m1 0h2m1 0h2m2 0h2m-25 1h2m1 0h3m1 0h2m1 0h5m1 0h1m1 0h1m4 0h2m-29 1h1m1 0h2m2 0h3m1 0h4m2 0h1m3 0h5m1 0h1m-19 1h1m3 0h1m3 0h1m3 0h1m3 0h1m1 0h3m-29 1h7m3 0h3m3 0h2m2 0h1m1 0h1m1 0h1m2 0h1m-28 1h1m5 0h1m1 0h1m2 0h3m1 0h2m1 0h1m1 0h1m3 0h5m-29 1h1m1 0h3m1 0h1m7 0h5m1 0h5m-25 1h1m1 0h3m1 0h1m1 0h2m3 0h1m5 0h2m1 0h1m1 0h4m-28 1h1m1 0h3m1 0h1m2 0h1m1 0h1m1 0h1m5 0h2m3 0h3m1 0h1m-29 1h1m5 0h1m4 0h1m5 0h5m1 0h1m3 0h1m-28 1h7m1 0h1m2 0h1m1 0h1m2 0h2m2 0h1m1 0h1m2 0h1m1 0h1"/></g></svg></div>
+<div class="tx"><b>Für deine Klasse:</b> Zeig diesen QR-Code. Deine Freunde scannen ihn mit der Kamera und landen genau hier.<br>
+<button id="share" type="button">📤 Link teilen (z. B. AirDrop)</button><span class="msg" id="smsg"></span></div></div>
+<h2>1. Code kopieren</h2>
+<div class="code">
+<p class="small">Tippe auf den blauen Knopf. Den Code musst du nicht lesen. Er ist kurz und holt sich die Smarte Suche jedes Mal frisch aus dem Internet, so bekommst du <b>Updates automatisch</b>.</p>
+<button id="copy" type="button">📋 Code kopieren</button><span class="msg" id="msg"></span>
+<details><summary>Code anzeigen (falls der Knopf nicht geht)</summary>
+<textarea id="code" readonly aria-label="Lesezeichen-Code">javascript:!function(){var e=document,t=e.getElementById(&quot;icf-root&quot;);if(t)t._close?t._close():t.remove();else{var n=[&quot;https://hustle-bot.github.io/smarte-suche/icf.js?v=&quot;+Math.floor(Date.now()/6e5),&quot;https://cdn.jsdelivr.net/gh/Hustle-Bot/smarte-suche@main/icf.js&quot;],o=0;!function t(){var r=e.createElement(&quot;script&quot;);r.src=n[o],r.onerror=function(){r.remove(),++o&lt;n.length?t():alert(&quot;Smarte Suche konnte nicht geladen werden. Bist du online? Sonst kurz warten und nochmal tippen.&quot;)},(e.head||e.body).appendChild(r)}()}}();</textarea>
+<p class="small">Ins Feld tippen → „Alles auswählen“ → „Kopieren“.</p></details>
+</div>
+
+<h2>2. Lesezeichen anlegen <span class="tag">nur einmal</span></h2>
+<ol class="steps">
+<li><span class="n">1</span><div>Bleib hier in <b>Safari</b>. Tippe oben rechts auf <b>Teilen</b> <span class="kbd">⬆︎</span> (das Kästchen mit dem Pfeil nach oben) → <b>„Lesezeichen hinzufügen“</b>. Name: <b>Smarte Suche</b>. Dann <b>„Sichern“</b>.</div></li>
+<li><span class="n">2</span><div>Tippe oben links auf das <b>Seitenleisten-Zeichen</b> <span class="kbd">▭</span> → <b>Lesezeichen</b> 📖. <b>Lange</b> auf „Smarte Suche“ drücken → <b>„Bearbeiten“</b>.
+<img class="shot" src="img/bearbeiten.jpg" alt="Lange auf Smarte Suche drücken, dann Bearbeiten" loading="lazy"></div></li>
+<li><span class="n">3</span><div>Ins Feld mit der Adresse (die Internetadresse dieser Seite) tippen und mit dem kleinen <span class="kbd">ⓧ</span> alles löschen. Lange ins leere Feld drücken → <b>„Einfügen“</b>. Bei <b>„Ort“</b> auf <b>Favoriten</b> stellen. Dann <b>„Sichern“</b>. Geschafft! 🎉
+<img class="shot" src="img/dialog.jpg" alt="Code ins Adressfeld einfügen, Ort Favoriten, Sichern" loading="lazy"></div></li>
+</ol>
+<p class="tip">Im Adressfeld muss danach <b>javascript:</b> am Anfang stehen. Steht da noch eine normale Internetadresse, hast du vorher nicht auf „Code kopieren“ gedrückt.</p>
+
+<h2>3. Jeden Tag benutzen</h2>
+<ol class="steps">
+<li><span class="n">1</span><div>Öffne <b>I care</b> und such ein Thema, z. B. <b>Schlaganfall</b>.</div></li>
+<li><span class="n">2</span><div>Tippe oben in die <b>Adresszeile</b>. Darunter siehst du deine Favoriten.</div></li>
+<li><span class="n">3</span><div>Tippe auf <b>„Smarte Suche“</b>. Sie geht über der Seite auf. ✨</div></li>
+</ol>
+<p class="tip">Schneller: In die Adresszeile <b>Smarte</b> tippen und den Vorschlag mit dem Buch 📖 antippen. Zumachen: <b>„✕ Schließen“</b>. Wenn du die Seite neu lädst, ist sie weg, dann einfach wieder aufs Lesezeichen tippen.</p>
+
+<h2>4. Was kann sie?</h2>
+<ul class="feat">
+<li><b>Filtern nach:</b> Thema (z. B. Symptome, Therapie, Pflege), Zielgruppe (z. B. Kinder, Ältere Menschen) und Buch.</li>
+<li><b>📖 Hauptkapitel</b> stehen oben: Kapitel, die genau dein Thema als Überschrift haben.</li>
+<li><b>Treffer antippen:</b> Das Buch geht in der Smarten Suche auf. Mit <b>‹ Zurück</b> oder dem <b>←</b> kommst du zur Liste zurück.</li>
+<li><b>Farben im Text:</b>
+  <span class="sw r">Suchwort</span> <span class="sw g">passt zu deinem Filter</span> <span class="sw p">wichtig</span>
+  <br>„Nächste Stelle ›“ springt von Markierung zu Markierung, „Marker aus“ macht die Farben weg.</li>
+<li><b>Bilder</b>-Tab: alle Abbildungen zum Thema auf einen Blick.</li>
+<li><b>🗂 Fachbegriffe</b>-Tab: die wichtigen Fachwörter zum Thema, links Latein, rechts Deutsch. Oben die <b>Top 10</b> (unbedingt lernen), darunter der Rest. „Lernen“ macht Karten zum Umdrehen. „Für Karteikarten kopieren“ kopiert alles für Quizlet oder Anki.</li>
+<li><b>☆ Merken:</b> Gute Stellen mit dem Stern sammeln. In der <b>Merkliste</b> kannst du die Quellen kopieren oder „Für Claude kopieren“ antippen und daraus ein Plakat oder eine Präsentation machen lassen.</li>
+</ul>
+
+<h2>5. Moodle dazuholen <span class="tag">optional</span></h2>
+<ol class="steps">
+<li><span class="n">1</span><div>Öffne in <b>Safari</b> deinen <b>Kurs in Moodle</b> (die Seite mit allen Lehrkräften).</div></li>
+<li><span class="n">2</span><div>Tippe dort auch auf das Lesezeichen <b>„Smarte Suche“</b>.</div></li>
+<li><span class="n">3</span><div>Tippe auf <b>„Dateien einlesen“</b>. Beim ersten Mal zusätzlich <b>„+ PDF-Inhalte“</b>. Das dauert ein paar Minuten, dafür gibt es Seitenzahlen.</div></li>
+<li><span class="n">4</span><div>Tippe auf <b>„Liste für I care kopieren“</b>.</div></li>
+<li><span class="n">5</span><div>Geh zu I care → Smarte Suche öffnen → Tab <b>„Moodle“</b> → <b>„Moodle-Liste einfügen“</b> → <b>„Aus Zwischenablage einfügen“</b> (Safari zeigt dann kurz <b>„Einsetzen“</b>, antippen) → fertig. Klappt das nicht: ins Kästchen darunter tippen, lange drücken → „Einfügen“ → <b>„Speichern“</b>.</div></li>
+</ol>
+<p class="tip">Jetzt zeigt dir die Smarte Suche zu jedem Thema die passenden Moodle-Dateien mit Seitenzahlen. Neue Dateien in Moodle? Schritt 2 bis 5 nochmal machen. Neue Dateien bekommen ein <b>NEU</b>.</p>
+
+<h2>Klappt was nicht?</h2>
+<ul class="feat">
+<li><b>Es passiert nichts:</b> Bist du online? Sonst war der Code nicht ganz drin: Schritt 1 und 2 nochmal machen.</li>
+<li><b>Keine Treffer:</b> Bist du in I care eingeloggt? Seite neu laden und Lesezeichen nochmal antippen.</li>
+<li><b>Seite war plötzlich weg:</b> Einfach wieder aufs Lesezeichen tippen. Merkliste und Moodle-Liste bleiben gespeichert.</li>
+<li><b>Am PC (Chrome/Edge):</b> <span class="kbd">Strg</span> + <span class="kbd">Umschalt</span> + <span class="kbd">O</span> → ⋮ → „Neues Lesezeichen“ → Name „Smarte Suche“, URL: Code einfügen.</li>
+</ul>
+
+<p class="note">Inoffizielles Add-on, kein Angebot von Thieme. Es nutzt nur deinen eigenen Login. Für die Moodle-Seitenzahlen liest es deine PDFs direkt in Safari (mit dem PDF-Leser pdf.js von cdnjs); nichts wird irgendwohin hochgeladen. Merkliste, eigene Filter und Moodle-Liste bleiben in Safari auf deinem Gerät. Der Code liegt öffentlich auf GitHub (Hustle-Bot/smarte-suche). Wenn Thieme die Seite umbaut, kann es sein, dass das Lesezeichen angepasst werden muss.</p>
+</div>
+<script>{
+const ta=document.getElementById('code'),b=document.getElementById('copy'),m=document.getElementById('msg');
+b.addEventListener('click',async()=>{
+  try{await navigator.clipboard.writeText(ta.value);m.textContent='Kopiert ✓';}
+  catch(e){var dt=ta.closest('details');if(dt)dt.open=true;ta.focus();ta.select();ta.setSelectionRange(0,ta.value.length);let ok=false;try{ok=document.execCommand('copy')}catch(_){}
+    m.textContent=ok?'Kopiert ✓':'Text ist markiert – jetzt „Kopieren“ wählen.';}
+});
+const sh=document.getElementById('share'),sm=document.getElementById('smsg'),URL1='https://hustle-bot.github.io/smarte-suche/';
+sh.addEventListener('click',async()=>{
+  try{if(navigator.share){await navigator.share({title:'Smarte Suche für I care',url:URL1});return;}}catch(e){if(e&&e.name==='AbortError')return;}
+  try{await navigator.clipboard.writeText(URL1);sm.textContent='Link kopiert ✓';}catch(e){sm.textContent=URL1;}
+});
+}</script></body></html>
